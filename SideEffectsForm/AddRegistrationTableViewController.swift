@@ -40,6 +40,7 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
     
     @IBOutlet weak var dateOfIssuePicker: UIDatePicker!
     @IBOutlet weak var additionalInfoTextField: UITextView!
+    @IBOutlet weak var descTextField: UITextView!
     
     
     
@@ -88,6 +89,7 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
         let gender = genderSegment.titleForSegment(at: genderSegment.selectedSegmentIndex);
         
         let dateOfIssue = dateOfIssuePicker.date
+        let desc = descTextField.text ?? ""
         let additionalInfo = additionalInfoTextField.text ?? ""
         
         return Registration(initials: initials, dateOfBirth: dateOfBirth, gender: gender, bodyHeight: bodyHeight, bodyWeight: bodyWeight, dateOfIssue: dateOfIssue, additionalInfo: additionalInfo
@@ -236,6 +238,8 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
                 header.textLabel?.text = "Patient information: ";
             case 1:
                 header.textLabel?.text = "Side effects information: ";
+            case 2:
+                header.textLabel?.text = "Information on used medical products: ";
             default:
                 header.textLabel?.text = "Information: "
         }

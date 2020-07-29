@@ -1025,6 +1025,7 @@
                     </navigationItem>
                     <size key="freeformSize" width="414" height="2800"/>
                     <connections>
+                        <outlet property="additionalInfoTextField" destination="kGr-3N-3Bs" id="AGy-da-BcR"/>
                         <outlet property="bodyHeightTextField" destination="U9B-O4-URS" id="k2l-6f-ULe"/>
                         <outlet property="bodyWeightTextField" destination="EF3-mH-zKg" id="e44-kp-Bns"/>
                         <outlet property="dateOfBirthLabel" destination="FSQ-pU-fdf" id="FEu-Ne-Auy"/>
@@ -1032,6 +1033,10 @@
                         <outlet property="dateOfIssueLabel" destination="Kxp-wI-SZD" id="MW9-ga-HIx"/>
                         <outlet property="dateOfIssuePicker" destination="a79-Jl-6mX" id="tVK-gU-M6K"/>
                         <outlet property="descTextField" destination="sK8-Ds-cF3" id="enh-2F-ADC"/>
+                        <outlet property="dosingEndLabel" destination="pat-oW-UMP" id="xYp-fX-Eck"/>
+                        <outlet property="dosingEndPicker" destination="HBw-RI-meg" id="BKN-ex-a71"/>
+                        <outlet property="dosingStartLabel" destination="jBq-tr-Sdg" id="3gT-aJ-nAM"/>
+                        <outlet property="dosingStartPicker" destination="Qkj-JK-olM" id="4JM-4R-J2G"/>
                         <outlet property="genderSegment" destination="PVA-CE-oIL" id="t0J-WM-wmA"/>
                         <outlet property="initialsTextField" destination="BIa-tK-XQw" id="vvb-Sb-6Bf"/>
                         <outlet property="pregnacySegment" destination="pf3-3Z-U8n" id="waD-Xb-buz"/>

@@ -15,10 +15,6 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
     
     //MARK: - Outlets
     
-    //@IBOutlet weak var firstNameTextField: UITextField!
-    //@IBOutlet weak var lastNameTextField: UITextField!
-    //@IBOutlet weak var emailTextField: UITextField!
-    
     @IBOutlet weak var initialsTextField: UITextField!
     @IBOutlet weak var bodyHeightTextField: UITextField!
     @IBOutlet weak var bodyWeightTextField: UITextField!
@@ -28,19 +24,22 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
     @IBOutlet weak var pregnacyTableViewCell: UITableViewCell!
     
     @IBOutlet weak var pregnacyWeekTableViewCell: UITableViewCell!
-    //@IBOutlet weak var checkInDateLabel: UILabel!
-    //@IBOutlet weak var checkInDatePicker: UIDatePicker!
-    //@IBOutlet weak var checkOutDateLabel: UILabel!
-    //@IBOutlet weak var checkOutDatePicker: UIDatePicker!
     
     @IBOutlet weak var dateOfBirthLabel: UILabel!
     @IBOutlet weak var dateOfBirthPicker: UIDatePicker!
-    //@IBOutlet weak var numberOfChildrenLabel: UILabel!
     @IBOutlet weak var dateOfIssueLabel: UILabel!
     
     @IBOutlet weak var dateOfIssuePicker: UIDatePicker!
     @IBOutlet weak var additionalInfoTextField: UITextView!
     @IBOutlet weak var descTextField: UITextView!
+    
+    
+    @IBOutlet weak var dosingStartLabel: UILabel!
+    @IBOutlet weak var dosingStartPicker: UIDatePicker!
+    
+
+    @IBOutlet weak var dosingEndLabel: UILabel!
+    @IBOutlet weak var dosingEndPicker: UIDatePicker!
     
     
     
@@ -49,8 +48,6 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
     //@IBOutlet weak var numberOfAdultLabel: UILabel!
     //@IBOutlet weak var numberOfAdultStepper: UIStepper!
     
-    //@IBOutlet weak var genderSwitch: UISwitch!
-    //@IBOutlet weak var roomTypeLabel: UILabel!
     
     //MARK: - Index paths
     
@@ -59,6 +56,15 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
     
     let dateOfIssueLabelCellIndexPath = IndexPath(row: 0, section: 1)
     let dateOfIssuePickerCellIndexPath = IndexPath(row: 1, section: 1)
+    let sideEffectDescriptionCellIndexPath = IndexPath(row: 3, section: 1)
+    let listOfconsequencesCellIndexPath = IndexPath(row: 7, section: 1)
+    
+    let dateOfDosingStartLabelCellIndexPath = IndexPath(row: 3, section: 2)
+    let dateOfDosingStartPickerCellIndexPath = IndexPath(row: 4, section: 2)
+    let dateOfDosingEndLabelCellIndexPath = IndexPath(row: 5, section: 2)
+    let dateOfDosingEndPickerCellIndexPath = IndexPath(row: 6, section: 2)
+    
+    let additionalInformationCellIndexPath = IndexPath(row: 1, section: 3)
     
     //MARK: - Showing/hide data pickers
     
@@ -73,6 +79,18 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
                dateOfIssuePicker.isHidden = !isDateOfIssuePickerShown
            }
        }
+    
+    private var isDateOfDosingStartPickerShown: Bool = false {
+        didSet {
+            dosingStartPicker.isHidden = !isDateOfDosingStartPickerShown
+        }
+    }
+        
+    private var isDateOfDosingEndPickerShown: Bool = false {
+           didSet {
+            dosingEndPicker.isHidden = !isDateOfDosingEndPickerShown
+           }
+    }
     
     // MARK: - Registration
     
@@ -89,7 +107,7 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
         let gender = genderSegment.titleForSegment(at: genderSegment.selectedSegmentIndex);
         
         let dateOfIssue = dateOfIssuePicker.date
-        let desc = descTextField.text ?? ""
+        //let desc = descTextField.text ?? ""
         let additionalInfo = additionalInfoTextField.text ?? ""
         
         return Registration(initials: initials, dateOfBirth: dateOfBirth, gender: gender, bodyHeight: bodyHeight, bodyWeight: bodyWeight, dateOfIssue: dateOfIssue, additionalInfo: additionalInfo
@@ -103,11 +121,13 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        genderSegment.selectedSegmentIndex = 0;
+        //genderSegment.selectedSegmentIndex = 0;
         
         let todayDate = Calendar.current.date(byAdding: .day, value: 0, to: Date())
         dateOfBirthPicker.maximumDate = todayDate
         dateOfIssuePicker.maximumDate = todayDate
+        dosingStartPicker.maximumDate = todayDate
+        dosingEndPicker.maximumDate = todayDate
         
 //        let midnightToday = Calendar.current.startOfDay(for: Date())
 //        checkInDatePicker.minimumDate = midnightToday
@@ -133,8 +153,19 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         
+        let compDosingStart = Calendar.current.dateComponents([.hour, .minute], from: dosingStartPicker.date)
+        let hourStart = compDosingStart.hour!
+        let minuteStart = compDosingStart.minute!
+        
+        let compDosingEnd = Calendar.current.dateComponents([.hour, .minute], from: dosingEndPicker.date)
+        let hourEnd = compDosingEnd.hour!
+        let minuteEnd = compDosingEnd.minute!
+        
         dateOfBirthLabel.text = dateFormatter.string(from: dateOfBirthPicker.date)
         dateOfIssueLabel.text = dateFormatter.string(from: dateOfIssuePicker.date)
+        dosingStartLabel.text = "\(dateFormatter.string(from: dosingStartPicker.date)) \(hourStart):\(minuteStart)"
+        dosingEndLabel.text = "\(dateFormatter.string(from: dosingEndPicker.date)) \(hourEnd):\(minuteEnd)"
+        
     }
     
 //    private func updateNumberOfGuests() {
@@ -149,6 +180,7 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
 //            roomTypeLabel.text = "Not Set"
 //        }
 //    }
+    
     
     //MARK: - Actions
     
@@ -222,6 +254,31 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
                 } else {
                     return 0
                 }
+                
+            case dateOfDosingStartPickerCellIndexPath:
+            
+                if isDateOfDosingStartPickerShown {
+                    return 216
+                } else {
+                    return 0
+                }
+                
+            case dateOfDosingEndPickerCellIndexPath:
+            
+                if isDateOfDosingEndPickerShown {
+                    return 216
+                } else {
+                    return 0
+                }
+                
+            case sideEffectDescriptionCellIndexPath:
+                return 88
+                
+            case listOfconsequencesCellIndexPath:
+                return 66
+                
+            case additionalInformationCellIndexPath:
+                return 88
     
             default:
                 return 44.0
@@ -257,6 +314,10 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
                 isDateOfBirthPickerShown = true
             }
             
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+        case dateOfIssueLabelCellIndexPath:
             if isDateOfIssuePickerShown {
                 isDateOfIssuePickerShown = false
             } else {
@@ -265,6 +326,26 @@ class AddRegistrationTableViewController: UITableViewController//, //SelectedRom
             
             tableView.beginUpdates()
             tableView.endUpdates()
+            
+        case dateOfDosingStartLabelCellIndexPath:
+            if isDateOfDosingStartPickerShown {
+                isDateOfDosingStartPickerShown = false
+            } else {
+                isDateOfDosingStartPickerShown = true
+            }
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+        case dateOfDosingEndLabelCellIndexPath:
+        if isDateOfDosingEndPickerShown {
+            isDateOfDosingEndPickerShown = false
+        } else {
+            isDateOfDosingEndPickerShown = true
+        }
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
             
         default:
             break
